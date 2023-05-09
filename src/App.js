@@ -1,33 +1,32 @@
 import "./App.css";
-import { useState } from "react";
 import axios from "axios";
+import { useState } from "react";
 
 function App() {
-  const [pokemon, setPokemon] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-
-  async function getPokemon() {
-    try {
-      const API = "https://pokeapi.co/api/v2/pokemon/" + searchQuery.toLowerCase();
-      const res = await axios.get(API);
-      setPokemon(res.data.sprites.front_default);
-    } catch (error) {
-      console.log(error);
-      // show a 404 image when there is an error... NICE
-      setPokemon("https://aioseo.com/wp-content/uploads/2021/04/how-to-find-and-fix-404-errors-in-wordpress.png.webp");
-    }
-  }
+  const [location, setLocation] = useState({});
 
   function handleChange(event) {
     setSearchQuery(event.target.value);
   }
 
+  async function getLocation() {
+    try {
+      // https://eu1.locationiq.com/v1/search?key=YOUR_ACCESS_TOKEN&q=SEARCH_STRING&format=json
+      const API = `https://eu1.locationiq.com/v1/search?key=${process.env.REACT_APP_API_KEY}&q=${searchQuery}&format=json`;
+      const res = await axios.get(API);
+      setLocation(res.data[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="App">
-      <h1>API Demo</h1>
-      <input onChange={handleChange} placeholder="What Pokemon?" />
-      <button onClick={getPokemon}>Show me the Pokemon!</button>
-      {pokemon && <img src={pokemon} alt="Pokemon" />}
+      <h1>City Explorer </h1>
+      <input onChange={handleChange} placeholder="Place name" />
+      <button onClick={getLocation}>Explore</button>
+      <h2>{location.display_name}</h2>
     </div>
   );
 }
