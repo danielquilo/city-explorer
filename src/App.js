@@ -1,7 +1,7 @@
 import "./App.css";
 import axios from "axios";
 import { useState } from "react";
-
+import Local from './Geolocation';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
