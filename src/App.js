@@ -2,6 +2,7 @@ import "./App.css";
 import axios from "axios";
 import { useState } from "react";
 
+
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [location, setLocation] = useState({});
